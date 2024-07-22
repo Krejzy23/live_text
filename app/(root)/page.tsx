@@ -13,6 +13,7 @@ import { dateConverter } from '@/lib/utils'
 const Home = async () => {
   const clerkUser = await currentUser();
   if(!clerkUser) redirect('/sign-in');
+  
   const roomDocuments = await getDocuments(clerkUser.emailAddresses[0].emailAddress);
 
   return (

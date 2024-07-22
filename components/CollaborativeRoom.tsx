@@ -8,9 +8,9 @@ import { Editor } from "./editor/Editor";
 import Header from "./Header";
 import ActiveCollaborators from "./ActiveCollaborators";
 
-const CollaborativeRoom = () => {
+const CollaborativeRoom = ({ roomId, roomMetadata}: CollaborativeRoomProps) => {
   return (
-    <RoomProvider id="my-room">
+    <RoomProvider id={roomId}>
       <ClientSideSuspense fallback={<div>Loading…</div>}>
         <div className="collaborative-room">
           <Header>

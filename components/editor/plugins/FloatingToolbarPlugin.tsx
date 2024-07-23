@@ -23,7 +23,7 @@ export default function FloatingToolbar() {
   const [range, setRange] = useState<Range | null>(null);
 
   useEffect(() => {
-    editor.registerUpdateListener(({ tags }) => {
+    const unregisterUpdateListener = editor.registerUpdateListener(({ tags }) => {
       return editor.getEditorState().read(() => {
         // Ignore selection updates related to collaboration
         if (tags.has("collaboration")) return;
@@ -35,7 +35,6 @@ export default function FloatingToolbar() {
         }
 
         const { anchor, focus } = selection;
-
         const range = createDOMRange(
           editor,
           anchor.getNode(),
@@ -44,9 +43,18 @@ export default function FloatingToolbar() {
           focus.offset
         );
 
-        setRange(range);
+        if (range) {
+          setRange(range);
+        } else {
+          console.error("Failed to create DOM range");
+          setRange(null);
+        }
       });
     });
+
+    return () => {
+      unregisterUpdateListener();
+    };
   }, [editor]);
 
   if (range === null) return null;
@@ -92,9 +100,13 @@ function Toolbar({
   });
 
   useLayoutEffect(() => {
-    setReference({
-      getBoundingClientRect: () => range.getBoundingClientRect(),
-    });
+    if (range) {
+      setReference({
+        getBoundingClientRect: () => range.getBoundingClientRect(),
+      });
+    } else {
+      console.error("Range is null in useLayoutEffect");
+    }
   }, [setReference, range]);
 
   return createPortal(
@@ -219,6 +231,12 @@ export function createDOMRange(
     anchorDOM === null ||
     focusDOM === null
   ) {
+    console.error("Undefined nodes or null DOM elements", {
+      anchorNode,
+      focusNode,
+      anchorDOM,
+      focusDOM,
+    });
     return null;
   }
 
@@ -246,6 +264,7 @@ export function createDOMRange(
     range.setStart(anchorDOM, anchorOffset);
     range.setEnd(focusDOM, focusOffset);
   } catch (e) {
+    console.error("Error setting range start and end", e);
     return null;
   }
 

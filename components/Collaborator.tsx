@@ -13,7 +13,7 @@ const Collaborator = ({ roomId, creatorId, collaborator, email, user }: Collabor
 
     await updateDocumentAccess({ 
       roomId, 
-      email, 
+      email,
       userType: type as UserType, 
       updatedBy: user 
     });

@@ -30,19 +30,10 @@ const CollaborativeRoom = ({
   ) => {
     if (e.key === "Enter") {
       setLoading(true);
-
-      try {
-        if (documentTitle !== roomMetadata.title) {
-          const updatedDocument = await updateDocument(roomId, documentTitle);
-
-          if (updatedDocument) {
-            setEditing(false);
-          }
-        }
-      } catch (error) {
-        console.error(error);
+      if (documentTitle !== roomMetadata.title) {
+        await updateDocument(roomId, documentTitle);
       }
-
+      setEditing(false);
       setLoading(false);
     }
   };
@@ -59,64 +50,64 @@ const CollaborativeRoom = ({
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [roomId, documentTitle]);
 
   useEffect(() => {
-    if (editing && inputRef.current) {
-      inputRef.current.focus();
-    }
+    if (editing) inputRef.current?.focus();
   }, [editing]);
 
   return (
     <RoomProvider id={roomId}>
       <ClientSideSuspense fallback={<Loader />}>
-        <div className="collaborative-room">
-          <Header>
+        <div className="collaborative-room bg-[#ecf0f3]">
+          <Header className="header-neu">
+            {/* LEFT – TITLE */}
             <div
               ref={containerRef}
-              className="flex w-fit items-center justify-center gap-2"
+              className="flex items-center gap-3 rounded-xl px-3 py-2
+                         bg-[#ecf0f3]
+                         shadow-[6px_6px_12px_rgba(0,0,0,0.12),-6px_-6px_12px_#ffffff]"
             >
-              {editing && !loading ? (
+              {editing ? (
                 <Input
-                  type="text"
-                  value={documentTitle}
                   ref={inputRef}
-                  placeholder="Enter title"
+                  value={documentTitle}
                   onChange={(e) => setDocumentTitle(e.target.value)}
                   onKeyDown={updateTitleHandler}
-                  disabled={!editing}
-                  className="document-title-input"
+                  className="title-input-neu"
                 />
               ) : (
-                <>
-                  <p className="document-title">{documentTitle}</p>
-                </>
+                <p className="title-text-neu">{documentTitle}</p>
               )}
 
               {currentUserType === "editor" && !editing && (
-                <Image
-                  src="/assets/icons/edit.svg"
-                  alt="edit"
-                  width={24}
-                  height={24}
+                <button
                   onClick={() => setEditing(true)}
-                  className="pointer"
-                />
+                  className="icon-btn-neu"
+                >
+                  <Image
+                    src="/assets/icons/edit.svg"
+                    alt="edit"
+                    width={18}
+                    height={18}
+                  />
+                </button>
               )}
 
-              {currentUserType !== "editor" && !editing && (
-                <p className="view-only-tag">View only</p>
+              {currentUserType !== "editor" && (
+                <span className="view-only-neu">View only</span>
               )}
 
-              {loading && <p className="text-sm text-gray-400">saving...</p>}
+              {loading && (
+                <span className="text-xs text-gray-500">saving…</span>
+              )}
             </div>
-            <div className="flex w-full flex-1 justify-end gap-2 sm:gap-3">
+
+            {/* RIGHT */}
+            <div className="flex items-center gap-3">
               <ActiveCollaborators />
-              <ShareModal 
+              <ShareModal
                 roomId={roomId}
                 collaborators={users}
                 creatorId={roomMetadata.creatorId}
@@ -130,6 +121,7 @@ const CollaborativeRoom = ({
               </SignedIn>
             </div>
           </Header>
+
           <Editor roomId={roomId} currentUserType={currentUserType} />
         </div>
       </ClientSideSuspense>

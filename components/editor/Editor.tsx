@@ -81,9 +81,9 @@ export function Editor({
           )}
 
           <LiveblocksPlugin>
-            <FloatingComposer className="w-[350px]" />
-            <FloatingThreads threads={threads} />
-            <Comments />
+            <FloatingComposer className="floating-composer w-[350px]" />
+            <FloatingThreads threads={threads} className="floating-threads" />
+            <Comments  />
           </LiveblocksPlugin>
         </div>
       </div>

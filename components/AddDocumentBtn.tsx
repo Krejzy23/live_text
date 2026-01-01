@@ -11,7 +11,6 @@ const AddDocumentBtn = ({ userId, email }: AddDocumentBtnProps) => {
   const addDocumentHandler = async () => {
     try {
       const room = await createDocument({ userId, email });
-
       if (room) router.push(`/documents/${room.id}`);
     } catch (error) {
       console.log(error);
@@ -20,12 +19,11 @@ const AddDocumentBtn = ({ userId, email }: AddDocumentBtnProps) => {
 
   return (
     <Button
-      type="submit"
       onClick={addDocumentHandler}
-      className="flex gap-1 gradient-blue shadow-md"
+      className="neu-button flex gap-2"
     >
       <Image src="/assets/icons/add.svg" alt="add" width={24} height={24} />
-      <p className="hidden sm:block">Start a blank document</p>
+      <p className="hidden sm:block relative z-10">Start a blank document</p>
     </Button>
   );
 };

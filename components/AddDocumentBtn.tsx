@@ -22,7 +22,7 @@ const AddDocumentBtn = ({ userId, email }: AddDocumentBtnProps) => {
       onClick={addDocumentHandler}
       className="neu-button flex gap-2"
     >
-      <Image src="/assets/icons/add.svg" alt="add" width={24} height={24} />
+      <Image src="/assets/icons/add.svg" alt="add" width={24} height={24}/>
       <p className="hidden sm:block relative z-10">Start a blank document</p>
     </Button>
   );

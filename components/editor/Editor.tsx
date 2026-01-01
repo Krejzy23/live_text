@@ -57,7 +57,7 @@ export function Editor({
   return (
     <LexicalComposer initialConfig={initialConfig}>
       <div className="editor-container size-full">
-        <div className="toolbar-wrapper flex  justify-between border-y rounded-2xl">
+        <div className="toolbar-wrapper flex justify-between border-y rounded-2xl">
           <ToolbarPlugin />
           {/* {currentUserType === "editor" && <DeleteModal roomId={roomId} />} */}
         </div>

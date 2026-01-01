@@ -398,7 +398,7 @@
   }
 
   .editor-wrapper {
-    @apply custom-scrollbar h-[calc(100vh-140px)] gap-5 overflow-auto lg:flex-row lg:items-start lg:justify-center pt-3;
+    @apply h-[calc(100vh-140px)] gap-5 overflow-auto lg:flex-row lg:items-start lg:justify-center pt-3;
   }
 
   .header {
@@ -434,7 +434,7 @@
   }
 
   .document-list-empty {
-    @apply flex w-full max-w-[730px] flex-col items-center justify-center gap-5 rounded-lg bg-dark-200 px-10 py-8;
+    @apply flex w-full max-w-[730px] flex-col items-center justify-center gap-5 rounded-lg bg-[#ecf0f3] px-10 py-8;
   }
 
   .document-title-input {

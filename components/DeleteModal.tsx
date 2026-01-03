@@ -24,57 +24,77 @@ export const DeleteModal = ({ roomId }: DeleteModalProps) => {
 
   const deleteDocumentHandler = async () => {
     setLoading(true);
-
     try {
       await deleteDocument(roomId);
       setOpen(false);
     } catch (error) {
-      console.log("Error notif:", error);
+      console.error("Delete error:", error);
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="min-w-9 rounded-xl bg-transparent p-2 transition-all">
+        <Button
+          variant="ghost"
+          className="
+            rounded-xl p-2
+            bg-transparent
+            hover:bg-transparent
+            neumorph-button
+          "
+        >
           <Image
             src="/assets/icons/delete.svg"
             alt="delete"
-            width={20}
-            height={20}
-            className="mt-1"
+            width={18}
+            height={18}
+            className="icon-danger"
           />
         </Button>
       </DialogTrigger>
-      <DialogContent className="shad-dialog">
-        <DialogHeader>
-          <Image
-            src="/assets/icons/delete-modal.svg"
-            alt="delete"
-            width={48}
-            height={48}
-            className="mb-4"
-          />
-          <DialogTitle>Delete document</DialogTitle>
-          <DialogDescription>
-            Are you sure you want to delete this document? This action cannot be
-            undone.
+
+      <DialogContent className="neumorph-dialog">
+        <DialogHeader className="items-center text-center">
+          <div className="neumorph-icon mb-4">
+            <Image
+              src="/assets/icons/delete-modal.svg"
+              alt="delete"
+              width={48}
+              height={48}
+            />
+          </div>
+
+          <DialogTitle className="text-lg">
+            Delete document
+          </DialogTitle>
+
+          <DialogDescription className="text-sm text-muted-foreground">
+            Are you sure you want to delete this document?
+            <br />
+            This action cannot be undone.
           </DialogDescription>
         </DialogHeader>
 
-        <DialogFooter className="mt-5">
-          <DialogClose asChild className="w-full bg-dark-400 text-white">
-            Cancel
+        <DialogFooter className="mt-6 flex gap-3">
+          <DialogClose asChild>
+            <Button
+              variant="secondary"
+              className="neumorph-button w-full"
+              disabled={loading}
+            >
+              Cancel
+            </Button>
           </DialogClose>
 
           <Button
-            variant="destructive"
             onClick={deleteDocumentHandler}
-            className="gradient-red w-full"
+            disabled={loading}
+            className="neumorph-danger w-full"
           >
-            {loading ? "Deleting..." : "Delete"}
+            {loading ? "Deleting…" : "Delete"}
           </Button>
         </DialogFooter>
       </DialogContent>

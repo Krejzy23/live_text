@@ -5,25 +5,44 @@ import React from "react";
 
 const Header = ({ children, className }: HeaderProps) => {
   return (
-    <div className={cn("header", className)}>
-      <Link href={"/"} className="flex">
+    <header
+      className={cn(
+        "header group",
+        className
+      )}
+    >
+      <Link
+        href="/"
+        className="
+          flex items-center gap-2
+          transition-opacity
+          hover:opacity-80
+        "
+        aria-label="Go to homepage"
+      >
         <Image
           src="/assets/icons/logo.svg"
           alt="logo with name"
           width={120}
           height={32}
           className="hidden md:block"
+          priority
         />
+
         <Image
           src="/assets/icons/logo-icon.svg"
           alt="logo"
           width={32}
           height={32}
-          className="mr-2 md:hidden"
+          className="md:hidden"
+          priority
         />
       </Link>
-      {children}
-    </div>
+
+      <div className="header-actions">
+        {children}
+      </div>
+    </header>
   );
 };
 
